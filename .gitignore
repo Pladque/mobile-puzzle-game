@@ -47,4 +47,4 @@ app.*.map.json
 
 # other
 /assets/levels
-/assets/hint
+/assets/hints
