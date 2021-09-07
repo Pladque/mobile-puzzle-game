@@ -6,7 +6,7 @@
 ## How to install
 ``` flutter run --no-sound-null-safety```
 ##features
-- [X] aniamtions
+- [X] animations
 - [X] save system
 - [X] ads
 - [X] sounds
