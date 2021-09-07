@@ -11,6 +11,10 @@
 - [X] ads
 - [X] sounds
 
+### a short example:
+![Alt Text](https://github.com/Pladque/mobile_puzzle_game/blob/master/examples/example1.gif)
+
+
 
 
 
