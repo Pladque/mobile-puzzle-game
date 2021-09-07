@@ -1,4 +1,4 @@
-# logicandmathpuzzles
+# Mobile math puzzles
 
 A new Flutter project.
 
