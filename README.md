@@ -3,7 +3,7 @@
 
 # Getting Started
 * Riddles are not included into project! You can put your riddles into asset/levels (similar with hints) *
-## How to install
+## How to run
 ``` flutter run --no-sound-null-safety```
 
 ## features
