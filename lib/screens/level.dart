@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:logicandmathpuzzles/resources/ad_state.dart';
+import 'package:logicandmathpuzzles/resources/ad_helper.dart';
 import 'package:vibration/vibration.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'dart:async';
@@ -12,7 +12,6 @@ import '../resources/snack_bar_message.dart';
 @immutable
 class Level extends StatefulWidget {
   final int levelNumber;
-  final int lvlNumberDouble;
   final int ans;
   final bool vibrationEnabled;
   final bool soundEnabled;
@@ -20,39 +19,29 @@ class Level extends StatefulWidget {
   final void Function(int) _markLevelAsSolved;
   final void Function() _playLevelDoneSound;
 
-  const Level(this.levelNumber, this.lvlNumberDouble, this.ans,
+  const Level(this.levelNumber, this.ans,
       this._markLevelAsSolved, this._playLevelDoneSound,
       {this.vibrationEnabled = true, this.soundEnabled = true, Key? key})
       : super(key: key);
 
-  // todo: do it that way https://stackoverflow.com/questions/46057353/controlling-state-from-outside-of-a-statefulwidget
+
   @override
-  State<StatefulWidget> createState() {
-    return _LevelState(
-      lvlNumberDouble,
-      levelNumber,
-      ans,
-      _markLevelAsSolved,
-      _playLevelDoneSound,
-      vibrationEnabled: vibrationEnabled,
-      soundEnabled: soundEnabled,
-    );
-  }
+  _LevelState createState() =>_LevelState();
+
 }
 
 class _LevelState extends State<Level> {
   bool isLoading = false;
 
-  final int levelNumber;
-  final int lvlNumberDouble;
-  final int ans;
+  int levelNumber = -1;
+  int ans = 999999999;
   String hintImgDir = '0';
   String puzzleImgDir = '0';
-  final bool vibrationEnabled;
-  final bool soundEnabled;
+  bool vibrationEnabled = true;
+  bool soundEnabled = true;
 
-  final void Function(int) _markLevelAsSolved;
-  final void Function() _playLevelDoneSound;
+  void Function(int)? _markLevelAsSolved;
+  void Function()? _playLevelDoneSound;
 
   bool adLoadFailed = false;
   late RewardedAd _rewardedAd;
@@ -64,11 +53,22 @@ class _LevelState extends State<Level> {
   late Timer _timer;
   int _timeToAd = 10;
 
-  _LevelState(this.levelNumber, this.lvlNumberDouble, this.ans,
-      this._markLevelAsSolved, this._playLevelDoneSound,
-      {this.vibrationEnabled = true, this.soundEnabled = true}) {
-    puzzleImgDir = 'assets/levels/' + levelNumber.toString() + '.png';
-    hintImgDir = 'assets/hints/' + levelNumber.toString() + '.png';
+  _LevelState();
+
+  @override
+  void initState() {
+    puzzleImgDir = 'assets/levels/' + widget.levelNumber.toString() + '.png';
+    hintImgDir = 'assets/hints/' + widget.levelNumber.toString() + '.png';
+    levelNumber = widget.levelNumber;
+    ans = widget.ans;
+    _markLevelAsSolved = widget._markLevelAsSolved;
+    _playLevelDoneSound = widget._playLevelDoneSound;
+    levelNumber = widget.levelNumber;
+    vibrationEnabled = widget.vibrationEnabled;
+    soundEnabled = widget.soundEnabled;
+
+    startTimer();
+    super.initState();
   }
 
   void startTimer() async {
@@ -93,16 +93,12 @@ class _LevelState extends State<Level> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    startTimer();
-    super.initState();
-  }
+
 
   bool _validateAnswer(String answer) {
     if (int.parse(answer) == ans) {
-      if (soundEnabled) _playLevelDoneSound();
-      _markLevelAsSolved(levelNumber);
+      if (soundEnabled) _playLevelDoneSound!();
+      _markLevelAsSolved!(levelNumber);
       return true;
     } else {
       if (vibrationEnabled) {
@@ -275,7 +271,7 @@ class _LevelState extends State<Level> {
           top: !showingSolution && !showingHint
               ? MediaQuery.of(context).size.height
               : 15,
-          //bottom:  0,
+
           child: Align(
             alignment: Alignment.bottomCenter,
             child: popUp,

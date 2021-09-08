@@ -18,43 +18,44 @@ enum volume {
 
 class Menu extends StatefulWidget {
   final Color backgroundColor;
-  final void Function(state) _changeState;
-  final volume Function() _changeVolume;
+  final void Function(state) changeState;
+  final volume Function() changeVolume;
   final volume _currentVolume;
 
-  const Menu(this.backgroundColor, this._changeState, this._changeVolume,
+  const Menu(this.backgroundColor, this.changeState, this.changeVolume,
       this._currentVolume,
       {Key? key})
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _MenuState(
-        backgroundColor, _changeState, _changeVolume, _currentVolume);
-  }
+  _MenuState createState() =>_MenuState();
+
 }
 
 class _MenuState extends State<Menu> {
-  final Color backgroundColor;
-  final void Function(state) _changeState;
-  final volume Function() _changeVolume;
+  Color backgroundColor = Colors.black;
+  void Function(state)? changeState;
+  volume Function()? changeVolume;
   static const double fontSizeDivider = 12;
   static const double buttonMarginAll = 15;
   static const double buttonWidthDivider = 1.25;
   final double iconAndTextContainerWidthDivider = 0.5;
 
-  volume _currentVolume;
+  volume _currentVolume = volume.voice;
   Icon _volumeIcon = const Icon(Icons.volume_up, size: 52);
   String _volumeText = 'all';
 
   @override
   void initState() {
-    super.initState();
-    _setVolumeIconAndText();
-  }
+    backgroundColor = widget.backgroundColor;
+    changeState = widget.changeState;
+    changeVolume = widget.changeVolume;
+    _currentVolume = widget._currentVolume;
 
-  _MenuState(this.backgroundColor, this._changeState, this._changeVolume,
-      this._currentVolume);
+    _setVolumeIconAndText();
+
+    super.initState();
+  }
 
   void _setVolumeIconAndText() {
     switch (_currentVolume) {
@@ -82,7 +83,7 @@ class _MenuState extends State<Menu> {
 
   void _volumeChangeHandler() {
     setState(() {
-      _currentVolume = _changeVolume();
+      _currentVolume = changeVolume!();
       _setVolumeIconAndText();
     });
   }
@@ -113,7 +114,7 @@ class _MenuState extends State<Menu> {
             children: <Widget>[
               NavButton(
                 backgroundColor,
-                () => {_changeState(state.level)},
+                () => {changeState!(state.level)},
                 text: 'play',
                 widthDivider: buttonWidthDivider,
                 icon: const Icon(Icons.play_arrow, size: 52),
@@ -125,7 +126,7 @@ class _MenuState extends State<Menu> {
               ),
               NavButton(
                 backgroundColor,
-                () => {_changeState(state.levels)},
+                () => {changeState!(state.levels)},
                 text: 'levels',
                 widthDivider: buttonWidthDivider,
                 icon: const Icon(Icons.menu, size: 50),
@@ -137,7 +138,7 @@ class _MenuState extends State<Menu> {
               ),
               NavButton(
                 backgroundColor,
-                () => {_changeState(state.about)},
+                () => {changeState!(state.about)},
                 text: 'about',
                 widthDivider: buttonWidthDivider,
                 icon: const Icon(Icons.description, size: 52),

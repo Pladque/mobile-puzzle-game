@@ -18,21 +18,28 @@ class InputSystem extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _InputSystemState(
-        answer, validateAnswer, vibrationEnabled, enableFeedback);
+    return _InputSystemState();
   }
 }
 
 class _InputSystemState extends State<InputSystem> {
-  //const InputSystem({Key? key}) : super(key: key);
   String _value = '';
-  final String answer;
-  final bool Function(String) validateAnswer;
-  final bool vibrationEnabled;
-  final bool enableFeedback;
+  String answer = '';
+  bool Function(String)? validateAnswer;
+  bool vibrationEnabled = true;
+  bool enableFeedback= true;
 
-  _InputSystemState(this.answer, this.validateAnswer, this.vibrationEnabled,
-      this.enableFeedback);
+
+  @override
+  void initState()
+  {
+    answer = widget.answer;
+    validateAnswer = widget.validateAnswer;
+    vibrationEnabled = widget.vibrationEnabled;
+    enableFeedback = widget.enableFeedback;
+
+    super.initState();
+  }
 
   bool canVibrate = true;
 
@@ -62,7 +69,7 @@ class _InputSystemState extends State<InputSystem> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InputFieldControlButton(
-          () => validateAnswer(_value),
+          () => validateAnswer!(_value),
           'OK',
           () => {},
           enableFeedback: enableFeedback,

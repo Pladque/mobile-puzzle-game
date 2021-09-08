@@ -187,7 +187,6 @@ class _HomeState extends State<Home> {
 
           return Level(
               _currentLevel,
-              data.levelsInfo[_currentLevel]['levelNumber'] as int,
               data.levelsInfo[_currentLevel]['ans'] as int,
               markLevelAsFinished,
               _playLevelCompletedSound,
