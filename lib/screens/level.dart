@@ -19,15 +19,13 @@ class Level extends StatefulWidget {
   final void Function(int) _markLevelAsSolved;
   final void Function() _playLevelDoneSound;
 
-  const Level(this.levelNumber, this.ans,
-      this._markLevelAsSolved, this._playLevelDoneSound,
+  const Level(this.levelNumber, this.ans, this._markLevelAsSolved,
+      this._playLevelDoneSound,
       {this.vibrationEnabled = true, this.soundEnabled = true, Key? key})
       : super(key: key);
 
-
   @override
-  _LevelState createState() =>_LevelState();
-
+  _LevelState createState() => _LevelState();
 }
 
 class _LevelState extends State<Level> {
@@ -93,8 +91,6 @@ class _LevelState extends State<Level> {
     super.dispose();
   }
 
-
-
   bool _validateAnswer(String answer) {
     if (int.parse(answer) == ans) {
       if (soundEnabled) _playLevelDoneSound!();
@@ -119,6 +115,7 @@ class _LevelState extends State<Level> {
   }
 
   void showHint() async {
+
     if (adLoadFailed) {
       SnackBarMessage.snowSnackBar(context, 'Error while loading an ad', 900);
       await Future.delayed(const Duration(seconds: 1));
@@ -160,6 +157,7 @@ class _LevelState extends State<Level> {
   }
 
   void showSolution() async {
+
     if (!showedHint) {
       SnackBarMessage.snowSnackBar(context, 'show hint first!', 700);
     } else {
@@ -271,7 +269,6 @@ class _LevelState extends State<Level> {
           top: !showingSolution && !showingHint
               ? MediaQuery.of(context).size.height
               : 15,
-
           child: Align(
             alignment: Alignment.bottomCenter,
             child: popUp,

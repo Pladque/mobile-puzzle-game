@@ -65,7 +65,7 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    super.initState();
+    _slideAnimationDirection = -1;
     _player = AudioPlayer();
     data = Data();
     initializePreference().whenComplete(() {
@@ -73,6 +73,7 @@ class _HomeState extends State<Home> {
         initSavedVariables();
       });
     });
+    super.initState();
   }
 
   @override
@@ -234,6 +235,7 @@ class _HomeState extends State<Home> {
         title: Center(
           child: Stack(
             children: <Widget>[
+              backButton,
               Container(
                 alignment: Alignment.center,
                 margin: const EdgeInsets.only(top: 15),
@@ -246,7 +248,7 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              backButton,
+
             ],
           ),
         ),

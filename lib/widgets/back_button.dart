@@ -13,7 +13,7 @@ class CustomBackButton extends StatelessWidget {
     return Container(
       alignment: Alignment.topLeft,
       child: NavButton(
-        const Color.fromARGB(0, 0, 0, 0),
+        const Color.fromARGB(0, 255, 255, 255),
         goBack,
         heightDivider: 12,
         widthDivider: 5,
