@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
+
 import 'nav_button.dart';
 import '../screens/menu.dart';
-
 
 class CustomBackButton extends StatelessWidget {
   final Function() goBack;
   final volume _currentVolume;
-  const CustomBackButton(this.goBack,this._currentVolume, {Key? key}) : super(key: key);
+
+  const CustomBackButton(this.goBack, this._currentVolume, {Key? key})
+      : super(key: key);
+
+  void _onPressedAction() {
+    if (_currentVolume == volume.vibration || _currentVolume == volume.voice) {
+      Vibration.vibrate(duration: 10);
+    }
+
+    goBack();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
 
 @immutable
 class NavButton extends StatelessWidget {
@@ -117,6 +118,12 @@ class NavButton extends StatelessWidget {
     }
   }
 
+  void _onPressedAction()
+  {
+    if (enableFeedback) Vibration.vibrate(duration: 10);
+    selectHandler();
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget _iconAndTextContainer = getContent(context);
@@ -137,7 +144,7 @@ class NavButton extends StatelessWidget {
               )
             : null,
         child: _iconAndTextContainer,
-        onPressed: selectHandler,
+        onPressed: _onPressedAction,
         splashColor: Colors.white,
       ),
     );
